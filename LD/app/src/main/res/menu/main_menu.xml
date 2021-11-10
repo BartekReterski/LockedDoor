@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_add_new_activity"
+        android:icon="@drawable/ic_outline_add_circle_outline_36"
+        android:title="Add new activity"
+        app:showAsAction="ifRoom">
+
+    </item>
+    <item
+        android:id="@+id/menu_notifications"
+        android:icon="@drawable/ic_baseline_notifications_36"
+        android:title="Notifications"
+        app:showAsAction="ifRoom">
+
+    </item>
+
+    <item
+        android:id="@+id/menu_history_chart"
+        android:title="Historical chart"
+        app:tint="@color/white"
+        android:icon="@drawable/ic_baseline_insert_chart_36"
+        app:showAsAction="never">
+
+    </item>
+    <item
+        android:id="@+id/menu_about_app"
+        android:title="About app"
+        app:tint="@color/white"
+        app:showAsAction="never">
+
+    </item>
+</menu>
