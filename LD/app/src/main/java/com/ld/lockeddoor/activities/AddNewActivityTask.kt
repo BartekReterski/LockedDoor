@@ -8,6 +8,6 @@ class AddNewActivityTask : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_task)
-        supportActionBar?.title="Add new activity task"
+        supportActionBar?.title="Add new task"
     }
 }
