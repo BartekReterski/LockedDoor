@@ -23,7 +23,7 @@
             android:text="Add new task info"
             android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="@dimen/_10sdp"
+            android:textSize="@dimen/_11sdp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,10 +32,13 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/task_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="@dimen/_200sdp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
+            app:counterEnabled="true"
+            app:counterMaxLength="15"
             app:errorEnabled="true"
             app:hintTextColor="@android:color/holo_orange_dark"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,8 +58,11 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/task_name_dsc"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="@dimen/_200sdp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:counterEnabled="true"
+            app:counterMaxLength="25"
+            android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
             app:errorEnabled="true"
             app:hintTextColor="@android:color/holo_orange_dark"
@@ -68,27 +74,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="details e.g. close the front door "
-                android:maxLength="30"
+                android:maxLength="25"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/section_text_2"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/_14sdp"
-            android:singleLine="true"
-            android:text="Notification"
-            android:textAllCaps="true"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_10sdp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task_name_dsc" />
 
         <Button
             android:id="@+id/add_new_task_btn"
@@ -96,14 +85,15 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_30sdp"
             android:background="@drawable/rounded_background"
             android:backgroundTint="#66bb6a"
             android:text="Add new task "
-            android:layout_marginTop="@dimen/_30sdp"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/section_text_2" />
+            app:layout_constraintTop_toBottomOf="@+id/task_name_dsc" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -114,17 +104,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_new_task_btn"
             app:srcCompat="@drawable/door" />
-
-        <ImageView
-            android:id="@+id/taskIcon"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_marginStart="@dimen/_20sdp"
-            app:layout_constraintBottom_toTopOf="@+id/section_text_2"
-            app:layout_constraintTop_toBottomOf="@+id/section_text"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_outline_door_front_128"
-            tools:layout_editor_absoluteX="17dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
