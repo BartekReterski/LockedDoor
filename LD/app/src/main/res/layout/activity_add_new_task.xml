@@ -79,6 +79,22 @@
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/section_text_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_14sdp"
+            android:singleLine="true"
+            android:text="Icon"
+            android:textAllCaps="true"
+            android:textColor="#9e9e9e"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/task_name_dsc"/>
 
 
         <androidx.cardview.widget.CardView
@@ -92,7 +108,7 @@
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/task_name_dsc"
+            app:layout_constraintTop_toBottomOf="@+id/section_text_2"
             app:cardCornerRadius="@dimen/_4sdp">
 
         <androidx.appcompat.widget.AppCompatSpinner

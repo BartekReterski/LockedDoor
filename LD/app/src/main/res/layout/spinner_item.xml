@@ -7,6 +7,7 @@
         android:id="@+id/iconImage"
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
+        android:layout_margin="@dimen/_10sdp"
         android:src="@drawable/ic_outline_door_front_128"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -15,9 +16,8 @@
         android:id="@+id/iconText"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/_30sdp"
-        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
         android:text="TEXT IKONY"
         app:layout_constraintBottom_toBottomOf="@+id/iconImage"
         app:layout_constraintStart_toEndOf="@+id/iconImage"
