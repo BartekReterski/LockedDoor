@@ -57,6 +57,17 @@
                 android:text="Dsc"
                 android:textStyle="bold"
               />
+
+            <ImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:id="@+id/imageViewIcon"
+                android:src="@drawable/ic_baseline_notifications_36"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+            </ImageView>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

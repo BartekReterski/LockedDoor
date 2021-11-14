@@ -3,16 +3,22 @@ package com.ld.lockeddoor.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.Toast
+import android.view.View
+import android.widget.*
+import androidx.appcompat.widget.AppCompatSpinner
 import com.google.android.material.textfield.TextInputEditText
 import com.ld.lockeddoor.R
+import com.ld.lockeddoor.adapters.SpinnerAdapterIcon
 import com.ld.lockeddoor.models.ReminderModel
+import com.ld.lockeddoor.models.SpinnerModel
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.lang.Exception
 
 class AddNewActivityTask : AppCompatActivity() {
+
+    var dataImageId:Int=0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_task)
@@ -34,6 +40,35 @@ class AddNewActivityTask : AppCompatActivity() {
             val taskNameValue=findViewById<TextInputEditText>(R.id.task_name_value)
             val taskNameDsc=findViewById<TextInputEditText>(R.id.task_name_dsc_value)
             val addNewTaskBtn=findViewById<Button>(R.id.add_new_task_btn)
+            val chooseIconSpinner=findViewById<AppCompatSpinner>(R.id.spinner_icon)
+
+            chooseIconSpinner.adapter= SpinnerAdapterIcon(
+                this, listOf(
+                    SpinnerModel(R.drawable.ic_outline_door_front_128,"Doors front"),
+                    SpinnerModel(R.drawable.ic_outline_door_front_128,"Doors front"),
+                    SpinnerModel(R.drawable.ic_outline_door_front_128,"Doors front"),
+                    SpinnerModel(R.drawable.ic_outline_door_front_128,"Doors front"),
+                    SpinnerModel(R.drawable.ic_outline_door_front_128,"Doors front")
+
+                )
+            )
+
+            chooseIconSpinner?.onItemSelectedListener=object: AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+                   val spinnerModel:SpinnerModel= chooseIconSpinner.selectedItem as SpinnerModel
+                    dataImageId=spinnerModel.image
+                   val dataText=spinnerModel.description
+
+
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
+                    println("Nothing selected")
+                }
+
+            }
 
             val config = RealmConfiguration.Builder().name("yourReminder.realm").build()
             val realm = Realm.getInstance(config)
@@ -64,6 +99,7 @@ class AddNewActivityTask : AppCompatActivity() {
                         val newTaskReminder = realm.createObject(ReminderModel::class.java)
                         newTaskReminder.reminderText=taskNameValue.text.toString()
                         newTaskReminder.reminderTextDsc=taskNameDsc.text.toString()
+                        newTaskReminder.reminderIcon= dataImageId
                         realm.commitTransaction()
 
 
