@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ld.lockeddoor.R
@@ -40,6 +42,12 @@ class MainActivity : AppCompatActivity() {
             val readAllRealm=realm.where(ReminderModel::class.java).findAll()
             val recyclerView=findViewById<RecyclerView>(R.id.recyclerView)
 
+            if(readAllRealm.size==1){
+
+                Toast.makeText(this,"You can set notification to remember about your tasks",Toast.LENGTH_LONG).show()
+            }
+
+
             recyclerView.apply {
                 setHasFixedSize(true)
                 layoutManager=GridLayoutManager(context,3,RecyclerView.VERTICAL,false)
@@ -68,6 +76,20 @@ class MainActivity : AppCompatActivity() {
 
                 val intent=Intent(this,AddNewActivityTask::class.java)
                 startActivity(intent)
+            }
+
+            R.id.menu_notifications->{
+
+                val builder = AlertDialog.Builder(this,R.style.CustomAlertDialog)
+                    .create()
+                val view = layoutInflater.inflate(R.layout.notification_alert_dialog,null)
+                val  button = view.findViewById<Button>(R.id.set_not_btn)
+                builder.setView(view)
+                button.setOnClickListener {
+                    builder.dismiss()
+                }
+                builder.setCanceledOnTouchOutside(false)
+                builder.show()
             }
 
         }
