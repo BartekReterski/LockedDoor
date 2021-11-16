@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +16,7 @@ import com.ld.lockeddoor.models.ReminderModel
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.lang.Exception
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,6 +42,16 @@ class MainActivity : AppCompatActivity() {
 
             val readAllRealm=realm.where(ReminderModel::class.java).findAll()
             val recyclerView=findViewById<RecyclerView>(R.id.recyclerView)
+
+
+            if(!readAllRealm.isNullOrEmpty()){
+
+                val textviewHelper = findViewById<TextView>(R.id.textViewHelper)
+                val imageviewHelper = findViewById<ImageView>(R.id.imageViewHelper)
+
+                textviewHelper.visibility = View.GONE
+                imageviewHelper.visibility = View.GONE
+            }
 
             if(readAllRealm.size==1){
 
@@ -79,17 +90,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.menu_notifications->{
-
-                val builder = AlertDialog.Builder(this,R.style.CustomAlertDialog)
-                    .create()
-                val view = layoutInflater.inflate(R.layout.notification_alert_dialog,null)
-                val  button = view.findViewById<Button>(R.id.set_not_btn)
-                builder.setView(view)
-                button.setOnClickListener {
-                    builder.dismiss()
-                }
-                builder.setCanceledOnTouchOutside(false)
-                builder.show()
+                notificationLogic()
             }
 
         }
@@ -107,6 +108,39 @@ class MainActivity : AppCompatActivity() {
         pressedTime = System.currentTimeMillis()
     }*/
 
+
+    private  fun notificationLogic(){
+        val builder = AlertDialog.Builder(this,R.style.CustomAlertDialog)
+            .create()
+        val view = layoutInflater.inflate(R.layout.notification_alert_dialog,null)
+        val closeImg=view.findViewById<ImageView>(R.id.close_button)
+        val setNotBtn=view.findViewById<Button>(R.id.set_not_btn)
+        val timePicker=view.findViewById<TimePicker>(R.id.timePicker)
+
+
+        val minute = timePicker.minute
+        val hour = timePicker.hour
+
+
+
+
+
+
+
+        closeImg.setOnClickListener{
+            builder.dismiss()
+        }
+
+        builder.setView(view)
+        setNotBtn.setOnClickListener {
+            Toast.makeText(this, hour.toString()+ minute.toString(),Toast.LENGTH_SHORT).show()
+            builder.dismiss()
+        }
+        builder.setCanceledOnTouchOutside(false)
+        builder.show()
+
+
+    }
     override fun onResume() {
         showReminderTaskList()
         super.onResume()

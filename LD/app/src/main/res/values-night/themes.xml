@@ -16,4 +16,5 @@
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/rounded_corner_alert</item>
     </style>
+
 </resources>

@@ -54,12 +54,12 @@
         android:id="@+id/text_helper_2"
         android:text="Set a notification to remember about your tasks"
         android:gravity="center"
-        android:textSize="@dimen/_13sdp"
+        android:textSize="@dimen/_14sdp"
         app:layout_constraintTop_toBottomOf="@id/text_helper"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_14sdp"
         android:layout_marginEnd="@dimen/_20sdp">
     </TextView>
 

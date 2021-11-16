@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:counterEnabled="true"
-            app:counterMaxLength="25"
+            app:counterMaxLength="20"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="details e.g. close the front door "
-                android:maxLength="25"
+                android:maxLength="20"
                 android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
