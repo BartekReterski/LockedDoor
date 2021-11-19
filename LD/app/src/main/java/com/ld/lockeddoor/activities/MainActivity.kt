@@ -23,6 +23,10 @@ import android.app.PendingIntent
 import android.app.AlarmManager
 import android.widget.Toast
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.Paint
+import android.text.method.LinkMovementMethod
+import androidx.appcompat.app.AppCompatDelegate
 import com.ld.lockeddoor.services.AlarmNotificationReceiver
 import java.lang.String
 
@@ -38,6 +42,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //wyłączenie czarnego motywu aplikacji
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         //inicjalizacja bazy danych Realm
         Realm.init(this)
@@ -133,6 +140,7 @@ class MainActivity : AppCompatActivity() {
             val closeImg = view.findViewById<ImageView>(R.id.close_button)
             val setNotBtn = view.findViewById<Button>(R.id.set_not_btn)
             val textViewTime = view.findViewById<TextView>(R.id.text_view_time_set)
+            val textViewNotDsb=view.findViewById<TextView>(R.id.text_view_not_dsb)
 
             //odebranie danych tymczasowych na temat godziny
             val sharedPreferences1 = getSharedPreferences("PREFS", MODE_PRIVATE)
@@ -143,6 +151,18 @@ class MainActivity : AppCompatActivity() {
                 hourShared,
                 minuteShared
             )
+
+            if(hourShared==0 && minuteShared==0){
+
+                textViewTime.visibility=View.GONE
+            }else{
+                textViewTime.visibility=View.VISIBLE
+
+                //zadeklarowanie przycisku usuwania notyfikacji jako underline
+                textViewNotDsb.paintFlags=textViewNotDsb.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+                textViewNotDsb.setTextColor(Color.BLUE)
+                textViewNotDsb.visibility=View.VISIBLE
+            }
 
             setNotBtn.setOnClickListener {
 
@@ -164,7 +184,7 @@ class MainActivity : AppCompatActivity() {
                         val startTime = Calendar.getInstance()
                         startTime[Calendar.HOUR_OF_DAY] = hourOfDay
                         startTime[Calendar.MINUTE] = minute
-                        startTime[Calendar.SECOND, ] = 0
+                        startTime[Calendar.SECOND] = 0
                         val alarmStartTime = startTime.timeInMillis
 
                         //odebranie danych tymczasowych na temat godziny
@@ -195,6 +215,12 @@ class MainActivity : AppCompatActivity() {
                             AlarmManager.INTERVAL_DAY,
                             pendingIntentAlarm
                         )
+                        Toast.makeText(this,String.format(
+                            "Notification time is " + "%02d:%02d",
+                            hourShared,
+                            minuteShared
+                        ),Toast.LENGTH_LONG).show()
+
                         builder.dismiss()
 
                     }, mHour, mMinute, true
@@ -205,7 +231,30 @@ class MainActivity : AppCompatActivity() {
 
             }
 
+            textViewNotDsb.setOnClickListener{
 
+                //usuniecie alarmu
+                val intentAlarmDisable = Intent(this, AlarmNotificationReceiver::class.java)
+                val pendingIntentAlarmDisable = PendingIntent.getBroadcast(
+                    this,
+                    notificationId,
+                    intentAlarmDisable,
+                    PendingIntent.FLAG_CANCEL_CURRENT
+                )
+                val alarmManagerNotDisable = (getSystemService(ALARM_SERVICE) as AlarmManager)
+                alarmManagerNotDisable.cancel(pendingIntentAlarmDisable)
+
+                //anulowanie  danych tymczasowych na temat wybranej godziny
+                sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.remove("hour")
+                editor.remove("minute")
+                editor.apply()
+                Toast.makeText(this,"Notification removed", Toast.LENGTH_SHORT).show();
+                builder.dismiss()
+
+
+            }
 
             closeImg.setOnClickListener {
                 builder.dismiss()

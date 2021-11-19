@@ -68,8 +68,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/text_view_time_set"
         android:text="14:30"
+        android:textStyle="bold"
         android:gravity="center"
-        android:textSize="@dimen/_14sdp"
+        android:textSize="@dimen/_15sdp"
         app:layout_constraintTop_toBottomOf="@id/text_helper_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,11 +90,27 @@
         android:background="@drawable/rounded_background"
         android:text="Set notification"
         android:layout_marginTop="@dimen/_30sdp"
-        app:layout_constraintTop_toBottomOf="@id/text_view_time_set"
+        app:layout_constraintTop_toBottomOf="@id/text_view_not_dsb"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
     </Button>
+
+    <TextView
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_view_not_dsb"
+        android:text="Remove notification"
+        android:visibility="gone"
+        android:gravity="center"
+        android:textSize="@dimen/_13sdp"
+        app:layout_constraintTop_toBottomOf="@id/text_view_time_set"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_20sdp">
+    </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

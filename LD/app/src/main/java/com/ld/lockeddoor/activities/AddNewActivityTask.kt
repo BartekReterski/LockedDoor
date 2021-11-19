@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.AppCompatSpinner
 import com.google.android.material.textfield.TextInputEditText
 import com.ld.lockeddoor.R
@@ -23,6 +24,9 @@ class AddNewActivityTask : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_task)
         supportActionBar?.title="Add new task"
+
+        //wyłączenie czarnego motywu aplikacji
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         //inicjalizacja bazy danych Realm
         Realm.init(this)
