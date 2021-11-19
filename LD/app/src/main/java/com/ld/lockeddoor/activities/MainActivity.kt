@@ -1,5 +1,7 @@
 package com.ld.lockeddoor.activities
 
+import android.annotation.SuppressLint
+import android.app.TimePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,11 +18,28 @@ import com.ld.lockeddoor.models.ReminderModel
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
+import android.app.PendingIntent
+
+import com.ld.lockeddoor.services.AlarmReceiver
+import android.app.AlarmManager
+import android.app.TimePickerDialog.OnTimeSetListener
+import android.widget.Toast
+
+import android.content.SharedPreferences
+
+import android.widget.TimePicker
+import org.w3c.dom.Text
+import java.lang.String
+
 
 class MainActivity : AppCompatActivity() {
 
-    private var pressedTime:Long=0
+    private var notificationId=0
+    lateinit var sharedPreferences:SharedPreferences
+    var hourShared = 0
+    var minuteShared = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,37 +128,119 @@ class MainActivity : AppCompatActivity() {
     }*/
 
 
-    private  fun notificationLogic(){
-        val builder = AlertDialog.Builder(this,R.style.CustomAlertDialog)
-            .create()
-        val view = layoutInflater.inflate(R.layout.notification_alert_dialog,null)
-        val closeImg=view.findViewById<ImageView>(R.id.close_button)
-        val setNotBtn=view.findViewById<Button>(R.id.set_not_btn)
-        val timePicker=view.findViewById<TimePicker>(R.id.timePicker)
+    @SuppressLint("DefaultLocale")
+    private  fun notificationLogic() {
+
+        try {
+
+            val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
+                .create()
+            val view = layoutInflater.inflate(R.layout.notification_alert_dialog, null)
+            val closeImg = view.findViewById<ImageView>(R.id.close_button)
+            val setNotBtn = view.findViewById<Button>(R.id.set_not_btn)
+            val textViewTime = view.findViewById<TextView>(R.id.text_view_time_set)
+
+            //odebranie danych tymczasowych na temat godziny
+            val sharedPreferences1 = getSharedPreferences("PREFS", MODE_PRIVATE)
+            hourShared = sharedPreferences1.getInt("hour", 0)
+            minuteShared = sharedPreferences1.getInt("minute", 0)
+            textViewTime.text = String.format(
+                "Notification time is " + "%02d:%02d",
+                hourShared,
+                minuteShared
+            )
+
+            setNotBtn.setOnClickListener {
+
+                val c = Calendar.getInstance()
+                val mHour = c[Calendar.HOUR_OF_DAY]
+                val mMinute = c[Calendar.MINUTE]
+                val mSecond = c[Calendar.SECOND]
 
 
-        val minute = timePicker.minute
-        val hour = timePicker.hour
+                // Intent
+                val intent = Intent(this@MainActivity, AlarmReceiver::class.java)
+                intent.putExtra("notificationId", notificationId)
+
+
+                // PendingIntent
+                val pendingIntent = PendingIntent.getBroadcast(
+                    this@MainActivity, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT
+                )
+
+                // AlarmManager
+
+                val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+
+                val timePickerDialog = TimePickerDialog(
+                    this@MainActivity,
+                    { view, hourOfDay, minute -> //wyslanie danych tymczasowych na temat wybranej godziny
+                        sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE)
+                        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.putInt("hour", hourOfDay)
+                        editor.putInt("minute", minute)
+                        editor.apply()
+
+                        // ustawienie czasu alarmu
+                        val startTime = Calendar.getInstance()
+                        startTime[Calendar.HOUR_OF_DAY] = hourOfDay
+                        startTime[Calendar.MINUTE] = minute
+                        startTime[Calendar.SECOND, ] = 0
+                        val alarmStartTime = startTime.timeInMillis
+
+                        //odebranie danych tymczasowych na temat godziny
+                        val sharedPreferences1 = getSharedPreferences("PREFS", MODE_PRIVATE)
+                        hourShared = sharedPreferences1.getInt("hour", 0)
+                        minuteShared = sharedPreferences1.getInt("minute", 0)
+                        textViewTime.text = String.format(
+                            "Notification time is " + "%02d:%02d",
+                            hourShared,
+                            minuteShared
+                        )
+
+                        // ustawienie alarmu
+
+                        val intentAlarm = Intent(this, AlarmReceiver::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        val pendingIntentAlarm = PendingIntent.getBroadcast(
+                            this,
+                            notificationId,
+                            intentAlarm,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                        )
+
+                        val alarmManagerNot = (getSystemService(ALARM_SERVICE) as AlarmManager)
+                        alarmManagerNot.setRepeating(
+                            AlarmManager.RTC_WAKEUP,
+                            alarmStartTime,
+                            AlarmManager.INTERVAL_DAY,
+                            pendingIntentAlarm
+                        )
+                        builder.dismiss()
+
+                    }, mHour, mMinute, true
+                )
+
+                timePickerDialog.show()
+
+
+            }
 
 
 
+            closeImg.setOnClickListener {
+                builder.dismiss()
+            }
 
+            builder.setView(view)
 
+            builder.setCanceledOnTouchOutside(false)
+            builder.show()
 
+        }catch (e:Exception){
 
-        closeImg.setOnClickListener{
-            builder.dismiss()
+            println(e.localizedMessage)
         }
-
-        builder.setView(view)
-        setNotBtn.setOnClickListener {
-            Toast.makeText(this, hour.toString()+ minute.toString(),Toast.LENGTH_SHORT).show()
-            builder.dismiss()
-        }
-        builder.setCanceledOnTouchOutside(false)
-        builder.show()
-
-
     }
     override fun onResume() {
         showReminderTaskList()

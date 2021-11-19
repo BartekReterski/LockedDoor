@@ -33,7 +33,7 @@
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_80sdp"
         android:layout_marginTop="@dimen/_30sdp"
-        android:src="@drawable/ic_outline_task_128"
+        android:src="@drawable/task_completed_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewHelper" />
