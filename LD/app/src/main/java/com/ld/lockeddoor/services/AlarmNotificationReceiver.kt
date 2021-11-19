@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.BroadcastReceiver
 import android.content.Context
 import com.ld.lockeddoor.activities.MainActivity
+import com.ld.lockeddoor.activities.SplashScreenActivity
 import java.util.*
 
 
@@ -20,7 +21,7 @@ class AlarmNotificationReceiver : BroadcastReceiver() {
         val notificationId = intent.getIntExtra("notificationId", 0)
 
         // uruchomienie activity z powiadomienia
-        val mainIntent = Intent(context, MainActivity::class.java)
+        val mainIntent = Intent(context, SplashScreenActivity::class.java)
         val contentIntent = PendingIntent.getActivity(context, 0, mainIntent, 0)
 
         // inicjalizacja notificationManager

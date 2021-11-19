@@ -21,12 +21,15 @@ import java.lang.Exception
 import java.util.*
 import android.app.PendingIntent
 import android.app.AlarmManager
+import android.content.DialogInterface
 import android.widget.Toast
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.Paint
+import android.net.Uri
 import android.text.method.LinkMovementMethod
 import androidx.appcompat.app.AppCompatDelegate
+import com.ld.lockeddoor.BuildConfig
 import com.ld.lockeddoor.services.AlarmNotificationReceiver
 import java.lang.String
 
@@ -73,7 +76,12 @@ class MainActivity : AppCompatActivity() {
                 imageviewHelper.visibility = View.GONE
             }
 
-            if(readAllRealm.size==1){
+            //odebranie danych tymczasowych na temat godziny
+            val sharedPreferences1 = getSharedPreferences("PREFS", MODE_PRIVATE)
+            hourShared = sharedPreferences1.getInt("hour", 0)
+            minuteShared = sharedPreferences1.getInt("minute", 0)
+
+            if(readAllRealm.size==1 && hourShared == 0 && minuteShared==0){
 
                 Toast.makeText(this,"You can set notification to remember about your tasks",Toast.LENGTH_LONG).show()
             }
@@ -111,6 +119,10 @@ class MainActivity : AppCompatActivity() {
 
             R.id.menu_notifications->{
                 notificationLogic()
+            }
+
+            R.id.menu_about_app->{
+                aboutAppAndRateDialog()
             }
 
         }
@@ -269,6 +281,44 @@ class MainActivity : AppCompatActivity() {
 
             println(e.localizedMessage)
         }
+    }
+    private fun aboutAppAndRateDialog(){
+
+        val dialogBuilder = AlertDialog.Builder(this)
+
+        val versionCode = BuildConfig.VERSION_CODE
+        val versionName = BuildConfig.VERSION_NAME
+        val iconsUsedInApp=" Icons used in application:\n\n Icons made by Freepik\n Icons made by Pixelmeetup\n Icons made by Pixel perfect\n"
+
+        // set message of alert dialog
+        dialogBuilder.setMessage("Application version: $versionName$versionCode\n\nIf you enjoy using the app would you mind taking a moment to rate it? \n\n$iconsUsedInApp")
+            .setCancelable(false)
+            .setPositiveButton("OK", DialogInterface.OnClickListener {
+                    dialog, _ -> dialog.cancel()
+            })
+            .setNeutralButton("Rate app", DialogInterface.OnClickListener {
+                    dialog, id ->
+
+                val appPackage= this.packageName
+
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackage")))
+
+                }catch (e:java.lang.Exception){
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackage")));
+                }
+                dialog.cancel()
+
+
+            })
+
+        val alert = dialogBuilder.create()
+        alert.setTitle(R.string.app_name)
+
+        alert.show()
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.rgb(63,81,181))
+        alert.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.rgb(63,81,181))
+
     }
     override fun onResume() {
         showReminderTaskList()
