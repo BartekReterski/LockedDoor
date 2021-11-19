@@ -18,25 +18,19 @@ import com.ld.lockeddoor.models.ReminderModel
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import java.lang.Exception
-import java.text.SimpleDateFormat
 import java.util.*
 import android.app.PendingIntent
-
-import com.ld.lockeddoor.services.AlarmReceiver
 import android.app.AlarmManager
-import android.app.TimePickerDialog.OnTimeSetListener
 import android.widget.Toast
-
 import android.content.SharedPreferences
-
-import android.widget.TimePicker
-import org.w3c.dom.Text
+import com.ld.lockeddoor.services.AlarmNotificationReceiver
 import java.lang.String
 
 
 class MainActivity : AppCompatActivity() {
 
     private var notificationId=0
+    private var pressedTime:Long=0
     lateinit var sharedPreferences:SharedPreferences
     var hourShared = 0
     var minuteShared = 0
@@ -116,7 +110,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-  /*  override fun onBackPressed() {
+   /* override fun onBackPressed() {
         if (pressedTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed()
             finish()
@@ -125,8 +119,8 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
         pressedTime = System.currentTimeMillis()
-    }*/
-
+    }
+*/
 
     @SuppressLint("DefaultLocale")
     private  fun notificationLogic() {
@@ -157,21 +151,6 @@ class MainActivity : AppCompatActivity() {
                 val mMinute = c[Calendar.MINUTE]
                 val mSecond = c[Calendar.SECOND]
 
-
-                // Intent
-                val intent = Intent(this@MainActivity, AlarmReceiver::class.java)
-                intent.putExtra("notificationId", notificationId)
-
-
-                // PendingIntent
-                val pendingIntent = PendingIntent.getBroadcast(
-                    this@MainActivity, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT
-                )
-
-                // AlarmManager
-
-                val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-
                 val timePickerDialog = TimePickerDialog(
                     this@MainActivity,
                     { view, hourOfDay, minute -> //wyslanie danych tymczasowych na temat wybranej godziny
@@ -200,7 +179,7 @@ class MainActivity : AppCompatActivity() {
 
                         // ustawienie alarmu
 
-                        val intentAlarm = Intent(this, AlarmReceiver::class.java)
+                        val intentAlarm = Intent(this, AlarmNotificationReceiver::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                         val pendingIntentAlarm = PendingIntent.getBroadcast(
                             this,

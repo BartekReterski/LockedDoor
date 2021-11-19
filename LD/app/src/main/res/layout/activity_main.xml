@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_380sdp"
         android:gravity="center"
-        android:text="Add things to do before you leave "
+        android:text="Add things to do tasks before you go"
         android:textSize="@dimen/_17sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

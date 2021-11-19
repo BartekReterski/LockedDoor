@@ -13,7 +13,7 @@ import java.util.*
 
 
 
-class AlarmReceiver : BroadcastReceiver() {
+class AlarmNotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
 
         // pobranie danych z intenta z MainActivity
