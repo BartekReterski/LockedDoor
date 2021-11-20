@@ -48,11 +48,33 @@ class AddNewActivityTask : AppCompatActivity() {
 
             chooseIconSpinner.adapter= SpinnerAdapterIcon(
                 this, listOf(
-                    SpinnerModel(R.drawable.ic_outline_door_front_128,"Doors front"),
-                    SpinnerModel(R.drawable.ic_outline_door_front_128,"Doors front"),
-                    SpinnerModel(R.drawable.ic_outline_door_front_128,"Doors front"),
-                    SpinnerModel(R.drawable.ic_outline_door_front_128,"Doors front"),
-                    SpinnerModel(R.drawable.ic_outline_door_front_128,"Doors front")
+                    SpinnerModel(R.drawable.ic_outline_door_front_128,"Door"),
+                    SpinnerModel(R.drawable.ic_baseline_window_128,"Window"),
+                    SpinnerModel(R.drawable.ic_baseline_phone_android_128,"Mobile phone"),
+                    SpinnerModel(R.drawable.ic_baseline_account_balance_wallet_128,"Wallet"),
+                    SpinnerModel(R.drawable.ic_baseline_check_circle_128,"Check"),
+                    SpinnerModel(R.drawable.ic_baseline_access_alarm_128,"Alarm"),
+                    SpinnerModel(R.drawable.ic_baseline_accessibility_128,"Person"),
+                    SpinnerModel(R.drawable.ic_baseline_photo_128,"Photo"),
+                    SpinnerModel(R.drawable.ic_baseline_add_card_128,"Card"),
+                    SpinnerModel(R.drawable.ic_baseline_access_time_128,"Time"),
+                    SpinnerModel(R.drawable.ic_baseline_add_location_128,"Location"),
+                    SpinnerModel(R.drawable.ic_baseline_announcement_128,"Info"),
+                    SpinnerModel(R.drawable.ic_baseline_apartment_128,"Apartment"),
+                    SpinnerModel(R.drawable.ic_baseline_backpack_128,"Backpack"),
+                    SpinnerModel(R.drawable.ic_baseline_battery_alert_128,"Battery"),
+                    SpinnerModel(R.drawable.ic_baseline_bed_128,"Bed"),
+                    SpinnerModel(R.drawable.ic_baseline_calendar_today_128,"Calendar"),
+                    SpinnerModel(R.drawable.ic_baseline_call_128,"Call"),
+                    SpinnerModel(R.drawable.ic_baseline_camera_128,"Camera"),
+                    SpinnerModel(R.drawable.ic_baseline_chat_128,"Chat"),
+                    SpinnerModel(R.drawable.ic_baseline_schedule_128,"Schedule"),
+                    SpinnerModel(R.drawable.ic_baseline_school_128,"School"),
+                    SpinnerModel(R.drawable.ic_baseline_security_128,"Security"),
+                    SpinnerModel(R.drawable.ic_baseline_local_gas_station_128,"Gas"),
+                    SpinnerModel(R.drawable.ic_baseline_weather_128,"Weather"),
+
+
 
                 )
             )
