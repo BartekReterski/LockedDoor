@@ -21,6 +21,8 @@ import io.realm.RealmResults
 
 class ReminderAdapter(private val info: List<ReminderModel>): RecyclerView.Adapter<ReminderAdapter.NewReminderViewHolder>() {
 
+    var checkValue:Boolean=false
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewReminderViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.reminder_items, parent, false)
         return NewReminderViewHolder(view)
@@ -60,66 +62,87 @@ class ReminderAdapter(private val info: List<ReminderModel>): RecyclerView.Adapt
 
         holder.switcherReminder.setOnCheckedChangeListener {
 
-            if(reminderCheckedValue){
+            if(!checkValue){
 
-                Toast.makeText(context,"Jest true",Toast.LENGTH_SHORT).show()
+                checkValue=true
+                Toast.makeText(context,"TRUE",Toast.LENGTH_SHORT).show()
+                holder.switcherReminder.setChecked(true)
+            }else{
+
+                checkValue=false
+                Toast.makeText(context,"FALSE",Toast.LENGTH_SHORT).show()
+                holder.switcherReminder.setChecked(false)
             }
 
         }
 
-        holder.moreButton.setOnClickListener{
+        holder.moreButton.setOnClickListener {
 
-            val popupMenu: PopupMenu = PopupMenu(context,holder.moreButton)
-            popupMenu.menuInflater.inflate(R.menu.recycler_context_menu,popupMenu.menu)
-            popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
-                when(item.itemId) {
+            try {
+                val popupMenu: PopupMenu = PopupMenu(context, holder.moreButton)
+                popupMenu.menuInflater.inflate(R.menu.recycler_context_menu, popupMenu.menu)
+                popupMenu.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                    when (item.itemId) {
 
 
-                    R.id.context_menu_delete ->{
-                        val dialogBuilder = AlertDialog.Builder(context)
+                        R.id.context_menu_delete -> {
+                            val dialogBuilder = AlertDialog.Builder(context)
 
-                        // set message of alert dialog
-                        dialogBuilder.setMessage("Are you sure you want to delete this item: "+info[position].reminderText)
-                            .setCancelable(false)
-                            .setPositiveButton("Yes", DialogInterface.OnClickListener {
-                                    dialog, id ->
-                                try {
-                                    val results: RealmResults<ReminderModel> =
-                                        realm.where(ReminderModel::class.java)
-                                            .equalTo("reminderText", info[position].reminderText).findAll()
-                                    realm.beginTransaction()
-                                    results.deleteAllFromRealm()
-                                    realm.commitTransaction()
-                                    notifyItemRemoved(position)
-                                    notifyItemRangeChanged(position,info.size)
-                                    Toast.makeText(context, "Deleted", Toast.LENGTH_LONG).show()
-                                } catch (ex: Exception) {
-                                    println(ex.message)
-                                }
+                            // set message of alert dialog
+                            dialogBuilder.setMessage("Are you sure you want to delete this item: " + info[position].reminderText)
+                                .setCancelable(false)
+                                .setPositiveButton(
+                                    "Yes",
+                                    DialogInterface.OnClickListener { dialog, id ->
+                                        try {
+                                            val results: RealmResults<ReminderModel> =
+                                                realm.where(ReminderModel::class.java)
+                                                    .equalTo(
+                                                        "reminderText",
+                                                        info[position].reminderText
+                                                    ).findAll()
+                                            realm.beginTransaction()
+                                            results.deleteAllFromRealm()
+                                            realm.commitTransaction()
+                                            notifyItemRemoved(position)
+                                            notifyItemRangeChanged(position, info.size)
+                                            Toast.makeText(context, "Deleted", Toast.LENGTH_LONG)
+                                                .show()
+                                        } catch (ex: Exception) {
+                                            println(ex.message)
+                                        }
 
-                                dialog.cancel()
-                            })
-                            .setNegativeButton("Cancel", DialogInterface.OnClickListener {
-                                    dialog, _ -> dialog.cancel()
-                            })
+                                        dialog.cancel()
+                                    })
+                                .setNegativeButton(
+                                    "Cancel",
+                                    DialogInterface.OnClickListener { dialog, _ ->
+                                        dialog.cancel()
+                                    })
 
-                        val alert = dialogBuilder.create()
-                        alert.setTitle("Confirm Delete")
-                        alert.show()
-                        alert.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.rgb(255,136,0))
-                        alert.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.rgb(255,136,0))
+                            val alert = dialogBuilder.create()
+                            alert.setTitle("Confirm Delete")
+                            alert.show()
+                            alert.getButton(AlertDialog.BUTTON_POSITIVE)
+                                .setTextColor(Color.rgb(255, 136, 0))
+                            alert.getButton(AlertDialog.BUTTON_NEGATIVE)
+                                .setTextColor(Color.rgb(255, 136, 0))
+
+
+                        }
 
 
                     }
+                    true
+                })
+                popupMenu.show()
 
+            } catch (e: Exception) {
 
-                }
-                true
-            })
-            popupMenu.show()
+                println(e.localizedMessage)
+            }
+
         }
-
-
     }
 
 
