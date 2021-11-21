@@ -10,9 +10,9 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bitvale.switcher.SwitcherC
-import com.bitvale.switcher.SwitcherX
 import com.ld.lockeddoor.R
 import com.ld.lockeddoor.models.ReminderModel
 import io.realm.Realm
@@ -22,6 +22,7 @@ import io.realm.RealmResults
 class ReminderAdapter(private val info: List<ReminderModel>): RecyclerView.Adapter<ReminderAdapter.NewReminderViewHolder>() {
 
     var checkValue:Boolean=false
+    var alertDialog: AlertDialog? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewReminderViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.reminder_items, parent, false)
@@ -53,26 +54,33 @@ class ReminderAdapter(private val info: List<ReminderModel>): RecyclerView.Adapt
 
         //ustawienie na start wartości false z bazy danych realm
         if(!reminderCheckedValue){
-
             holder.switcherReminder.setChecked(false)
-        }else{
+        }
+        else{
             holder.switcherReminder.setChecked(true)
         }
 
 
         holder.switcherReminder.setOnCheckedChangeListener {
 
-            if(!checkValue){
 
-                checkValue=true
-                Toast.makeText(context,"TRUE",Toast.LENGTH_SHORT).show()
-                holder.switcherReminder.setChecked(true)
-            }else{
+                val alertDialogBuilder = AlertDialog.Builder(context)
+                alertDialogBuilder.setTitle("Check confirm")
+                alertDialogBuilder.setMessage("Are you sure you want to mark $reminderName as 'Checcked'?")
+                alertDialogBuilder.setPositiveButton("Set as checked") { _: DialogInterface, _: Int ->
 
-                checkValue=false
-                Toast.makeText(context,"FALSE",Toast.LENGTH_SHORT).show()
-                holder.switcherReminder.setChecked(false)
-            }
+                    holder.switcherReminder.setChecked(true)
+                    Toast.makeText(context, "$reminderName set as checked",Toast.LENGTH_SHORT).show()
+                    alertDialog?.dismiss()
+                }
+                alertDialogBuilder.setNegativeButton("Cancel") { _: DialogInterface, _: Int ->
+
+                    holder.switcherReminder.setChecked(false)
+                    alertDialog?.dismiss()
+                }
+
+                alertDialog = alertDialogBuilder.create()
+                alertDialog?.show()
 
         }
 

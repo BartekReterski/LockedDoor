@@ -31,16 +31,23 @@ import android.text.method.LinkMovementMethod
 import androidx.appcompat.app.AppCompatDelegate
 import com.ld.lockeddoor.BuildConfig
 import com.ld.lockeddoor.services.AlarmNotificationReceiver
+import com.mopub.common.MoPub
+import com.mopub.common.SdkConfiguration
+import com.mopub.common.SdkInitializationListener
+import com.mopub.common.logging.MoPubLog
+import com.mopub.mobileads.MoPubErrorCode
+import com.mopub.mobileads.MoPubView
 import java.lang.String
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),MoPubView.BannerAdListener {
 
     private var notificationId=0
     private var pressedTime:Long=0
     lateinit var sharedPreferences:SharedPreferences
     var hourShared = 0
     var minuteShared = 0
+    private lateinit var moPubView: MoPubView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +56,20 @@ class MainActivity : AppCompatActivity() {
         //wyłączenie czarnego motywu aplikacji
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
+
+        //reklamy baner
+
+        val configuration: SdkConfiguration.Builder = SdkConfiguration.Builder("b195f8dd8ded45fe847ad89ed1d016da")
+        if (BuildConfig.DEBUG) {
+            configuration.withLogLevel(MoPubLog.LogLevel.DEBUG);
+        } else {
+            configuration.withLogLevel(MoPubLog.LogLevel.INFO);
+        }
+
+        MoPub.initializeSdk(this, configuration.build(), initSdkListener())
+        moPubView =findViewById(R.id.bannerBookAdd)
+        moPubView.setAdUnitId("b195f8dd8ded45fe847ad89ed1d016da")
+
         //inicjalizacja bazy danych Realm
         Realm.init(this)
 
@@ -56,7 +77,15 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    //inicjalizacja reklam mobup
+    private fun initSdkListener(): SdkInitializationListener {
 
+        return SdkInitializationListener {
+
+            moPubView.loadAd()
+
+        }
+    }
     private fun showReminderTaskList(){
 
         try{
@@ -320,8 +349,31 @@ class MainActivity : AppCompatActivity() {
         alert.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.rgb(63,81,181))
 
     }
+
+
     override fun onResume() {
         showReminderTaskList()
         super.onResume()
+    }
+
+    override fun onBannerLoaded(p0: MoPubView) {
+        Toast.makeText(this,
+            "Banner successfully loaded.", Toast.LENGTH_SHORT).show();
+    }
+
+    override fun onBannerFailed(p0: MoPubView?, p1: MoPubErrorCode?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBannerClicked(p0: MoPubView?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBannerExpanded(p0: MoPubView?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBannerCollapsed(p0: MoPubView?) {
+        TODO("Not yet implemented")
     }
 }

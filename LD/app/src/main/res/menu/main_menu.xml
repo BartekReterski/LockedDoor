@@ -20,6 +20,7 @@
     <item
         android:id="@+id/menu_history_chart"
         android:title="Historical chart"
+        android:visible="false"
         app:tint="@color/white"
         android:icon="@drawable/ic_baseline_insert_chart_36"
         app:showAsAction="never">
