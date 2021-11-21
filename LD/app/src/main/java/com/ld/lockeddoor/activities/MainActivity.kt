@@ -376,4 +376,9 @@ class MainActivity : AppCompatActivity(),MoPubView.BannerAdListener {
     override fun onBannerCollapsed(p0: MoPubView?) {
         TODO("Not yet implemented")
     }
+
+    override fun onDestroy() {
+        moPubView.destroy()
+        super.onDestroy()
+    }
 }

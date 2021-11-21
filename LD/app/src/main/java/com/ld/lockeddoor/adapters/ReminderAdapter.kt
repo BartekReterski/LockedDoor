@@ -66,7 +66,7 @@ class ReminderAdapter(private val info: List<ReminderModel>): RecyclerView.Adapt
 
                 val alertDialogBuilder = AlertDialog.Builder(context)
                 alertDialogBuilder.setTitle("Check confirm")
-                alertDialogBuilder.setMessage("Are you sure you want to mark $reminderName as 'Checcked'?")
+                alertDialogBuilder.setMessage("Are you sure you want to mark $reminderName as Checked?")
                 alertDialogBuilder.setPositiveButton("Set as checked") { _: DialogInterface, _: Int ->
 
                     holder.switcherReminder.setChecked(true)
